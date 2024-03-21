@@ -45,6 +45,8 @@ namespace API
             builder.Services.AddScoped<IOperations<URL>, OperationService<URL>>();
             builder.Services.AddScoped<IOperations<URLTag>, OperationService<URLTag>>();
 
+            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

@@ -1,5 +1,7 @@
-﻿using API.Application.Contracts.Interfaces;
+﻿using API.Application.Contracts.DTOs;
+using API.Application.Contracts.Interfaces;
 using API.Domain.Models;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Api.Controllers
@@ -9,18 +11,22 @@ namespace API.Api.Controllers
     public class HTTPMethodController : ControllerBase
     {
         private readonly IOperations<HTTPMethods> _operationService;
+        private readonly IMapper _mapper;
 
-        public HTTPMethodController(IOperations<HTTPMethods> operationService)
+        public HTTPMethodController(
+            IOperations<HTTPMethods> operationService,
+            IMapper mapper)
         {
             _operationService = operationService;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<IEnumerable<HTTPMethods>> GetAllAsync()
+        public async Task<IEnumerable<HTTPMethodDTO>> GetAllAsync()
         {
-            IEnumerable<HTTPMethods> data = await _operationService.GetAll();
+            var data = await _operationService.GetAll();
 
-            return data;
+            return _mapper.Map<IEnumerable<HTTPMethodDTO>>(data);
         }
     }
 }

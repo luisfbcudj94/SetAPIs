@@ -1,5 +1,7 @@
-﻿using API.Application.Contracts.Interfaces;
+﻿using API.Application.Contracts.DTOs;
+using API.Application.Contracts.Interfaces;
 using API.Domain.Models;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Api.Controllers
@@ -9,18 +11,22 @@ namespace API.Api.Controllers
     public class TagController : ControllerBase
     {
         private readonly IOperations<Tag> _operationService;
+        private readonly IMapper _mapper;
 
-        public TagController(IOperations<Tag> operationService)
+        public TagController(
+            IOperations<Tag> operationService,
+            IMapper mapper)
         {
             _operationService = operationService;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Tag>> GetAllAsync()
+        public async Task<IEnumerable<TagDTO>> GetAllAsync()
         {
-            IEnumerable<Tag> data = await _operationService.GetAll();
+            var data = await _operationService.GetAll();
 
-            return data;
+            return _mapper.Map<IEnumerable<TagDTO>>(data);
         }
     }
 }

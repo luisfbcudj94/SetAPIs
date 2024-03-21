@@ -1,5 +1,7 @@
-﻿using API.Application.Contracts.Interfaces;
+﻿using API.Application.Contracts.DTOs;
+using API.Application.Contracts.Interfaces;
 using API.Domain.Models;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Api.Controllers
@@ -9,18 +11,22 @@ namespace API.Api.Controllers
     public class ConfigurationController : ControllerBase
     {
         private readonly IOperations<Configuration> _operationService;
+        private readonly IMapper _mapper;
 
-        public ConfigurationController(IOperations<Configuration> operationService)
+        public ConfigurationController(
+            IOperations<Configuration> operationService,
+            IMapper mapper)
         {
             _operationService = operationService;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Configuration>> GetAllAsync()
+        public async Task<IEnumerable<ConfigurationDTO>> GetAllAsync()
         {
-            IEnumerable<Configuration> data = await _operationService.GetAll();
+            var data = await _operationService.GetAll();
 
-            return data;
+            return _mapper.Map<IEnumerable<ConfigurationDTO>>(data);
         }
     }
 }

@@ -1,5 +1,7 @@
-﻿using API.Application.Contracts.Interfaces;
+﻿using API.Application.Contracts.DTOs;
+using API.Application.Contracts.Interfaces;
 using API.Domain.Models;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Api.Controllers
@@ -9,18 +11,22 @@ namespace API.Api.Controllers
     public class URLController : ControllerBase
     {
         private readonly IOperations<URL> _operationService;
+        private readonly IMapper _mapper;
 
-        public URLController(IOperations<URL> operationService)
+        public URLController(
+            IOperations<URL> operationService,
+            IMapper mapper)
         {
             _operationService = operationService;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<IEnumerable<URL>> GetAllAsync()
+        public async Task<IEnumerable<URLDTO>> GetAllAsync()
         {
-            IEnumerable<URL> data = await _operationService.GetAll();
+            var data = await _operationService.GetAll();
 
-            return data;
+            return _mapper.Map<IEnumerable<URLDTO>>(data);
         }
     }
 }
