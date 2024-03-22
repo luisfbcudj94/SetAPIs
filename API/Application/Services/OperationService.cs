@@ -12,31 +12,30 @@ namespace API.Application.Services
         {
             _repository = repository;
         }
-
+        
         public async Task<IEnumerable<T>> GetAll()
         {
             return await _repository.GetAll();
         }
 
-        public async Task<T> GetById(int id)
+        public async Task<T> GetById(Guid id) 
         {
             return await _repository.GetById(id);
         }
 
-        public async Task Add(T entity)
+        public async Task<T> Add(T entity)
         {
-            await _repository.Add(entity);
+            return await _repository.Add(entity);
         }
 
-        public async Task Update(T entity)
+        public async Task<T> Update(T entity)
         {
-            await _repository.Update(entity);
+            return await _repository.Update(entity);
         }
 
-        public async Task Delete(int id)
+        public async Task Delete(Guid id)
         {
             await _repository.Delete(id);
-
         }
     }
 }

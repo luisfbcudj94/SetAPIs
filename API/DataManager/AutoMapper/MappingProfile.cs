@@ -1,4 +1,10 @@
-﻿using API.Application.Contracts.DTOs;
+﻿using API.Application.Contracts.DTOs.API;
+using API.Application.Contracts.DTOs.Body;
+using API.Application.Contracts.DTOs.Configuration;
+using API.Application.Contracts.DTOs.Header;
+using API.Application.Contracts.DTOs.HTTPMethod;
+using API.Application.Contracts.DTOs.Tag;
+using API.Application.Contracts.DTOs.URL;
 using API.Domain.Models;
 using AutoMapper;
 namespace API.DataManager.AutoMapper
