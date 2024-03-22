@@ -4,6 +4,7 @@ using API.Persistence.DBContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240322203300_HTPP-Seeds")]
+    partial class HTPPSeeds
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,23 +58,6 @@ namespace API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("APITypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("62ffbd2a-30f3-4e8e-bb8e-774a7d95e924"),
-                            Name = "GRAPHQL"
-                        },
-                        new
-                        {
-                            Id = new Guid("8028a4d9-53cf-4a23-bb5c-949b0a2a5806"),
-                            Name = "SOAP"
-                        },
-                        new
-                        {
-                            Id = new Guid("d09b4952-47c8-4c9d-a39a-d3d57643c02b"),
-                            Name = "REST"
-                        });
                 });
 
             modelBuilder.Entity("API.Domain.Models.Body", b =>
