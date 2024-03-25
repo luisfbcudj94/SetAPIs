@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace API.Persistence.Seeds
 {
-    public class HTTPMethodsSeed: IEntityTypeConfiguration<HTTPMethods>
+    public class HTTPMethodsSeed : IEntityTypeConfiguration<HTTPMethods>
     {
         public void Configure(EntityTypeBuilder<HTTPMethods> builder)
         {
