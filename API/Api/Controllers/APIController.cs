@@ -49,6 +49,14 @@ namespace API.Api.Controllers
             return Ok(_mapper.Map<APIDTO>(await _operationService.Add(data)));
         }
 
+        //[HttpPost]
+        //public async Task<ActionResult<API.Domain.Models.API>> CreateAsync(API.Domain.Models.API input)
+        //{
+        //    var data = await _operationService.Add(input);
+        //    return Ok(data);
+        //}
+
+
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAsync(Guid id, APIDTO input)
         {

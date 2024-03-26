@@ -4,6 +4,7 @@ using API.Persistence.DBContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240322203300_HTPP-Seeds")]
+    partial class HTPPSeeds
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,23 +58,6 @@ namespace API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("APITypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("62ffbd2a-30f3-4e8e-bb8e-774a7d95e924"),
-                            Name = "GRAPHQL"
-                        },
-                        new
-                        {
-                            Id = new Guid("8028a4d9-53cf-4a23-bb5c-949b0a2a5806"),
-                            Name = "SOAP"
-                        },
-                        new
-                        {
-                            Id = new Guid("d09b4952-47c8-4c9d-a39a-d3d57643c02b"),
-                            Name = "REST"
-                        });
                 });
 
             modelBuilder.Entity("API.Domain.Models.Body", b =>
@@ -188,6 +174,14 @@ namespace API.Migrations
                     b.Property<Guid>("ConfigurationId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ConfigurationId");
@@ -209,8 +203,7 @@ namespace API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("HeaderId")
-                        .IsUnique();
+                    b.HasIndex("HeaderId");
 
                     b.HasIndex("TagId");
 
@@ -245,12 +238,15 @@ namespace API.Migrations
                     b.Property<Guid?>("HTTPMethodId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("HttpMethodsId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("HTTPMethodId");
+                    b.HasIndex("HttpMethodsId");
 
                     b.ToTable("URLs");
                 });
@@ -341,27 +337,29 @@ namespace API.Migrations
             modelBuilder.Entity("API.Domain.Models.HeaderTag", b =>
                 {
                     b.HasOne("API.Domain.Models.Header", null)
-                        .WithOne("HeaderTag")
-                        .HasForeignKey("API.Domain.Models.HeaderTag", "HeaderId")
+                        .WithMany("HeaderTag")
+                        .HasForeignKey("HeaderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("API.Domain.Models.Tag", "Tag")
+                    b.HasOne("API.Domain.Models.Tag", "Tags")
                         .WithMany()
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Tag");
+                    b.Navigation("Tags");
                 });
 
             modelBuilder.Entity("API.Domain.Models.URL", b =>
                 {
-                    b.HasOne("API.Domain.Models.HTTPMethods", "HttpMethod")
+                    b.HasOne("API.Domain.Models.HTTPMethods", "HttpMethods")
                         .WithMany()
-                        .HasForeignKey("HTTPMethodId");
+                        .HasForeignKey("HttpMethodsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("HttpMethod");
+                    b.Navigation("HttpMethods");
                 });
 
             modelBuilder.Entity("API.Domain.Models.URLTag", b =>
@@ -399,8 +397,7 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Domain.Models.Header", b =>
                 {
-                    b.Navigation("HeaderTag")
-                        .IsRequired();
+                    b.Navigation("HeaderTag");
                 });
 
             modelBuilder.Entity("API.Domain.Models.URL", b =>

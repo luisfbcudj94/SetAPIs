@@ -4,6 +4,7 @@ using API.Persistence.DBContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240325202117_fix-columnHttpMethod")]
+    partial class fixcolumnHttpMethod
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -188,6 +191,14 @@ namespace API.Migrations
                     b.Property<Guid>("ConfigurationId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ConfigurationId");
@@ -209,8 +220,7 @@ namespace API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("HeaderId")
-                        .IsUnique();
+                    b.HasIndex("HeaderId");
 
                     b.HasIndex("TagId");
 
@@ -341,18 +351,18 @@ namespace API.Migrations
             modelBuilder.Entity("API.Domain.Models.HeaderTag", b =>
                 {
                     b.HasOne("API.Domain.Models.Header", null)
-                        .WithOne("HeaderTag")
-                        .HasForeignKey("API.Domain.Models.HeaderTag", "HeaderId")
+                        .WithMany("HeaderTag")
+                        .HasForeignKey("HeaderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("API.Domain.Models.Tag", "Tag")
+                    b.HasOne("API.Domain.Models.Tag", "Tags")
                         .WithMany()
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Tag");
+                    b.Navigation("Tags");
                 });
 
             modelBuilder.Entity("API.Domain.Models.URL", b =>
@@ -399,8 +409,7 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Domain.Models.Header", b =>
                 {
-                    b.Navigation("HeaderTag")
-                        .IsRequired();
+                    b.Navigation("HeaderTag");
                 });
 
             modelBuilder.Entity("API.Domain.Models.URL", b =>

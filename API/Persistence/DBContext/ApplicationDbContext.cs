@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using API.Domain.Models;
+using API.Persistence.Seeds;
 
 namespace API.Persistence.DBContext
 {
@@ -20,6 +21,15 @@ namespace API.Persistence.DBContext
         public DbSet<Tag> Tags { get; set; }
         public DbSet<URL> URLs { get; set; }
         public DbSet<URLTag> URLTags { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.ApplyConfiguration(new HTTPMethodsSeed());
+            modelBuilder.ApplyConfiguration(new APITypeSeed());
+        }
+
 
     }
 }
